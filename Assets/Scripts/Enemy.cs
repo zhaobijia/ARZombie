@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
     public float moveSpeed = 0.1f;
+    public float turnSpeed  = 1f;
     public float attackRange = 1f;
     public float attackPower = 10f;
     public float recoveringTime = 0.2f;
@@ -82,10 +83,12 @@ public class Enemy : MonoBehaviour
 
     void MoveToLocation(Vector3 targetPoint)
     {
-        Quaternion rotation = Quaternion.LookRotation(new Vector3(enemyManager.cameraTransform.position.x-transform.position.x, 0, enemyManager.cameraTransform.position.z-transform.position.z), Vector3.up);
-
+        
+        //transform
         transform.position = new Vector3(Mathf.Lerp(transform.position.x, targetPoint.x, moveSpeed * Time.deltaTime), transform.position.y, Mathf.Lerp(transform.position.z, targetPoint.z, moveSpeed * Time.deltaTime));
-        transform.rotation = rotation;
+        //rotation
+        Quaternion rotation = Quaternion.LookRotation(new Vector3(enemyManager.cameraTransform.position.x - transform.position.x, 0, enemyManager.cameraTransform.position.z - transform.position.z), Vector3.up);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation,turnSpeed*Time.deltaTime);
     }
 
    
